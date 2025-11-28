@@ -12,7 +12,8 @@ import com.example.roomdatabase_046.view.EntrySiswaScreen
 import com.example.roomdatabase_046.view.HomeScreen
 
 @Composable
-fun SiswaApp(navController: NavHostController = rememberNavController()) {
+fun SiswaApp(navController: NavHostController = rememberNavController(),
+             modifier: Modifier = Modifier) {
     HostNavigasi(navController = navController)
 }
 
