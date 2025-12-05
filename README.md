@@ -20,6 +20,11 @@ pertemuan 9
    <img width="1440" height="900" alt="Screenshot 2025-12-05 at 16 42 33" src="https://github.com/user-attachments/assets/8ee1260c-36b3-4031-a5d5-d8920da3ad0e" />
 4. daftar data setelah terhapus
    <img width="1440" height="900" alt="Screenshot 2025-12-05 at 16 43 09" src="https://github.com/user-attachments/assets/080dfbf0-cb41-4388-90a3-83944f07bbc7" />
+5. edit data
+   <img width="1440" height="900" alt="Screenshot 2025-12-05 at 20 45 14" src="https://github.com/user-attachments/assets/e45f8d69-5afa-40e0-8cf5-78c6f7b3732a" />
+6. edited data pada detail
+   <img width="1440" height="900" alt="Screenshot 2025-12-05 at 20 45 21" src="https://github.com/user-attachments/assets/714a01f6-c818-4217-ab5a-dea37bc06946" />
+
 
 
 
