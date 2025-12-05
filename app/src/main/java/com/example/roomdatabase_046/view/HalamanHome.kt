@@ -49,7 +49,9 @@ object DestinasiHome : DestinasiNavigasi {
 @Composable
 fun HomeScreen(
     navigateToItemEntry: () -> Unit,
+    navigateToItemUpdate:(Int) -> Unit,
     modifier: Modifier = Modifier,
+    onSiswaClick: (Siswa) -> Unit,
     viewModel: HomeViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -81,6 +83,7 @@ fun HomeScreen(
 
         BodyHome(
             itemSiswa = uiStateHome.listSiswa,
+            onSiswaClick = onSiswaClick,
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
@@ -107,7 +110,9 @@ fun BodyHome(
         } else {
             ListSiswa(
                 itemSiswa = itemSiswa,
-                modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small))
+                onSiswaClick = {onSiswaClick(it.id)},
+                modifier = Modifier
+                    .padding(horizontal = dimensionResource(id = R.dimen.padding_small))
             )
         }
     }
@@ -116,7 +121,8 @@ fun BodyHome(
 @Composable
 fun ListSiswa(
     itemSiswa: List<Siswa>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onSiswaClick: (Siswa) -> Unit
 ) {
     LazyColumn(modifier = modifier) {
         items(items = itemSiswa, key = { it.id }) { person ->
@@ -124,6 +130,7 @@ fun ListSiswa(
                 siswa = person,
                 modifier = Modifier
                     .padding(dimensionResource(id = R.dimen.padding_small))
+                    .clickable { onSiswaClick(person)}
             )
         }
     }
