@@ -14,7 +14,7 @@ import com.example.roomdatabase_046.view.DetailSiswaScreen
 import com.example.roomdatabase_046.view.EntrySiswaScreen
 import com.example.roomdatabase_046.view.HomeScreen
 import com.example.roomdatabase_046.view.route.DestinasiDetailSiswa
-import com.example.roomdatabase_046.view.route.DestinasiDetailSiswa.DestinasiDetailSiswa.itemIdArg
+import com.example.roomdatabase_046.view.route.DestinasiDetailSiswa.itemIdArg
 
 @Composable
 fun SiswaApp(navController: NavHostController = rememberNavController(),
@@ -36,6 +36,8 @@ fun HostNavigasi(
         composable(DestinasiHome.route) {
             HomeScreen(
                 navigateToItemEntry = { navController.navigate(DestinasiEntry.route) },
+                navigateToItemUpdate = {
+                    navController.navigate("${DestinasiDetailSiswa.route}/${it}") }
             )
         }
 
