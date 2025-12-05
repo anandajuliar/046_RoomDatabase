@@ -3,13 +3,18 @@ package com.example.roomdatabase_046.view.uicontroller
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.roomdatabase_046.view.DestinasiEntry
 import com.example.roomdatabase_046.view.DestinasiHome
+import com.example.roomdatabase_046.view.DetailSiswaScreen
 import com.example.roomdatabase_046.view.EntrySiswaScreen
 import com.example.roomdatabase_046.view.HomeScreen
+import com.example.roomdatabase_046.view.route.DestinasiDetailSiswa
+import com.example.roomdatabase_046.view.route.DestinasiDetailSiswa.DestinasiDetailSiswa.itemIdArg
 
 @Composable
 fun SiswaApp(navController: NavHostController = rememberNavController(),
@@ -39,6 +44,14 @@ fun HostNavigasi(
             EntrySiswaScreen(
                 navigateBack = { navController.popBackStack() }
             )
+        }
+        composable(route= DestinasiDetailSiswa.routeWithArgs,
+            arguments = listOf(navArgument(name=itemIdArg){
+            type = NavType.IntType
+            })
+        ){
+            DetailSiswaScreen(
+                navigateBack = { navController.navigateUp() })
         }
     }
 }
