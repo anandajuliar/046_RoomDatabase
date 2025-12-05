@@ -15,7 +15,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -36,22 +35,16 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.roomdatabase_046.R
 import com.example.roomdatabase_046.room.Siswa
-import com.example.roomdatabase_046.view.route.DestinasiNavigasi
+import com.example.roomdatabase_046.view.route.DestinasiHome
 import com.example.roomdatabase_046.viewmodel.HomeViewModel
 import com.example.roomdatabase_046.viewmodel.provider.PenyediaViewModel
-
-object DestinasiHome : DestinasiNavigasi {
-    override val route = "home"
-    override val titleRes = R.string.app_name
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     navigateToItemEntry: () -> Unit,
-    navigateToItemUpdate:(Int) -> Unit,
     modifier: Modifier = Modifier,
-    onSiswaClick: (Siswa) -> Unit,
+    onDetailClick: (Int) -> Unit = {},
     viewModel: HomeViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -59,9 +52,9 @@ fun HomeScreen(
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            // Menggunakan CenterAlignedTopAppBar bawaan Material3 agar scrollBehavior jalan
-            CenterAlignedTopAppBar(
-                title = { Text(stringResource(DestinasiHome.titleRes)) },
+            SiswaTopAppBar(
+                title = stringResource(DestinasiHome.titleRes),
+                canNavigateBack = false,
                 scrollBehavior = scrollBehavior
             )
         },
@@ -78,23 +71,22 @@ fun HomeScreen(
             }
         },
     ) { innerPadding ->
-        // Mengambil state dari ViewModel
-        val uiStateHome by viewModel.homeUiState.collectAsState()
-
+        val uiStateSiswa by viewModel.homeUiState.collectAsState()
         BodyHome(
-            itemSiswa = uiStateHome.listSiswa,
-            onSiswaClick = onSiswaClick,
+            itemSiswa = uiStateSiswa.listSiswa,
             modifier = Modifier
                 .padding(innerPadding)
-                .fillMaxSize()
+                .fillMaxSize(),
+            onSiswaClick = onDetailClick
         )
     }
 }
 
 @Composable
 fun BodyHome(
-    itemSiswa: List<Siswa>, // Harus List<Siswa>, bukan List kosong
-    modifier: Modifier = Modifier
+    itemSiswa: List<Siswa>,
+    modifier: Modifier = Modifier,
+    onSiswaClick: (Int) -> Unit = {}
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -104,15 +96,13 @@ fun BodyHome(
             Text(
                 text = stringResource(R.string.deskripsi_no_item),
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(16.dp)
+                style = MaterialTheme.typography.titleLarge
             )
         } else {
             ListSiswa(
                 itemSiswa = itemSiswa,
-                onSiswaClick = {onSiswaClick(it.id)},
-                modifier = Modifier
-                    .padding(horizontal = dimensionResource(id = R.dimen.padding_small))
+                modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small)),
+                onSiswaClick = { onSiswaClick(it.id) }
             )
         }
     }
@@ -121,8 +111,9 @@ fun BodyHome(
 @Composable
 fun ListSiswa(
     itemSiswa: List<Siswa>,
-    modifier: Modifier = Modifier,
-    onSiswaClick: (Siswa) -> Unit
+    onSiswaClick: (Siswa) -> Unit,
+    modifier: Modifier = Modifier
+
 ) {
     LazyColumn(modifier = modifier) {
         items(items = itemSiswa, key = { it.id }) { person ->
@@ -130,7 +121,7 @@ fun ListSiswa(
                 siswa = person,
                 modifier = Modifier
                     .padding(dimensionResource(id = R.dimen.padding_small))
-                    .clickable { onSiswaClick(person)}
+                    .clickable{ onSiswaClick(person)}
             )
         }
     }
@@ -138,7 +129,7 @@ fun ListSiswa(
 
 @Composable
 fun DataSiswa(
-    siswa: Siswa, // Menggunakan Entity Siswa langsung
+    siswa: Siswa,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -150,8 +141,7 @@ fun DataSiswa(
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
                     text = siswa.nama,
@@ -164,8 +154,7 @@ fun DataSiswa(
                 )
                 Text(
                     text = siswa.telepon,
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(start = 8.dp) // Sedikit jarak antara icon dan text
+                    style = MaterialTheme.typography.titleMedium
                 )
             }
             Text(
